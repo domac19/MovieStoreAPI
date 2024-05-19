@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MovieStoreAPI.Context;
 using MovieStoreAPI.Models;
 
@@ -77,6 +78,54 @@ namespace MovieStoreAPI.Controllers
             _appDbContext.SaveChanges();
 
             return Ok();
+        }
+
+        [HttpGet("movies/{movieId}/actors")]
+        public IActionResult GetActorsByMovie(int id)
+        {
+            var movie = _appDbContext.Movie.Include(m => m.Actors).FirstOrDefault(m => m.Id == id);
+
+            if (movie == null)
+            {
+                return NotFound();
+            }
+
+            var actors = movie.Actors;
+            return Ok(actors);
+        }
+
+        [HttpGet("movies/filter")]
+        public IActionResult FilterMovies([FromQuery] string? genre, [FromQuery] decimal? budget, [FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate)
+        {
+            if (genre == null && budget == null && startDate == null && endDate == null)
+            {
+                return NotFound();
+            }
+
+            var query = _appDbContext.Movie.AsQueryable();
+
+            if (!string.IsNullOrEmpty(genre))
+            {
+                query = query.Where(m => m.Genre == genre);
+            }
+
+            if (budget.HasValue)
+            {
+                query = query.Where(m => m.Budget <= budget.Value);
+            }
+
+            if (startDate.HasValue)
+            {
+                query = query.Where(m => m.StartOfFilming >= startDate.Value);
+            }
+
+            if (endDate.HasValue)
+            {
+                query = query.Where(m => m.EndOfFilming <= endDate.Value);
+            }
+
+            var filteredMovies = query.ToList();
+            return Ok(filteredMovies);
         }
     }
 }
