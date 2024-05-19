@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using MovieStoreAPI.Context;
 
 namespace MovieStoreAPI.Controllers
 {
@@ -6,10 +8,22 @@ namespace MovieStoreAPI.Controllers
     [ApiController]
     public class DirectorController : ControllerBase
     {
-        [HttpGet("pregledVlastitihPodataka")]
-        public IActionResult GetMyData()
+        private readonly AppDbContext _appDbContext;
+        public DirectorController(AppDbContext appContext)
         {
-            return Ok();
+            _appDbContext = appContext;
+        }
+        [Authorize]
+        [HttpGet("pregledSvihFilmova")]
+        public IActionResult GetAllMovies()
+        {
+            return Ok(_appDbContext.Movie.FirstOrDefault());
+        }
+
+        [HttpGet("pregledPojedinogFilma")]
+        public IActionResult GetMoviesById(int id)
+        {
+            return Ok(_appDbContext.Movie.Where(x => x.Id == id).SingleOrDefault());
         }
     }
 }

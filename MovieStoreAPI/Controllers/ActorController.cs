@@ -16,10 +16,16 @@ namespace MovieStoreAPI.Controllers
         }
 
         [Authorize]
-        [HttpGet("pregledSvihFilmova")]
+        [HttpGet("pregledVlastitihPodataka")]
         public IActionResult GetAllMovies()
         {
             return Ok(_appDbContext.Movie.FirstOrDefault());
+        }
+
+        [HttpGet("id")]
+        public IActionResult GetMoviesById(int id)
+        {
+            return Ok(_appDbContext.Movie.Where(x => x.Id == id).SingleOrDefault());
         }
     }
 }
