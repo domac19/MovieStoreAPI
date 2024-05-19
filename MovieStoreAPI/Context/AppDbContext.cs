@@ -12,5 +12,6 @@ namespace MovieStoreAPI.Context
         public DbSet<User> Users { get; set; }
         public DbSet<Actor> Actor { get; set; }
         public DbSet<Movie> Movie { get; set; }
+        public DbSet<Slot> Slot { get; set; }
     }
 }

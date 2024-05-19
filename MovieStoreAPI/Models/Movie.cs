@@ -11,5 +11,9 @@
         public DateTime EndOfFilming { get; set; }
         public string Genre { get; set; }
         public List<Actor> Actors { get; set; }
+        public string Invitation { get; set; }
+        public string ActorApplication { get; set; }
+        public string Role { get; set; }
+        public string Director { get; set; }
     }
 }
