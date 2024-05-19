@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MovieStoreAPI.Context;
+using MovieStoreAPI.Models;
 
 namespace MovieStoreAPI.Controllers
 {
@@ -15,17 +16,25 @@ namespace MovieStoreAPI.Controllers
              _appDbContext = appDbContext;
         }
 
-        [Authorize]
         [HttpGet("pregledVlastitihPodataka")]
-        public IActionResult GetAllMovies()
+        public IActionResult GetById(int id)
         {
-            return Ok(_appDbContext.Movie.FirstOrDefault());
+            var getActorDataById = _appDbContext.Actor.Where(i => i.Id == id).FirstOrDefault();
+            
+            return Ok(getActorDataById);
         }
 
-        [HttpGet("id")]
-        public IActionResult GetMoviesById(int id)
+        [HttpPut("ažuriranjeVlastitihPodataka")]
+        public IActionResult GetMoviesById([FromBody] Actor actor)
         {
-            return Ok(_appDbContext.Movie.Where(x => x.Id == id).SingleOrDefault());
+            var findActorById = _appDbContext.Actor.Find(actor.Id);
+
+            findActorById!.Name = actor.Name;
+            findActorById.Surname = actor.Surname;
+            findActorById.Address = actor.Address;
+            findActorById.FeePerMovie = actor.FeePerMovie;
+
+            return Ok(actor);
         }
     }
 }
