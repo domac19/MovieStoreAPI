@@ -80,10 +80,10 @@ namespace MovieStoreAPI.Controllers
             return Ok();
         }
 
-        [HttpGet("movies/{movieId}/actors")]
-        public IActionResult GetActorsByMovie()
+        [HttpGet("pregledSvihGlumacaZaPojediniFilm")]
+        public IActionResult GetActorsByMovie(int id)
         {
-            var movie = _appDbContext.Movie.Include(m => m.Actors).FirstOrDefault();
+            var movie = _appDbContext.Movie.Include(m => m.Actors).FirstOrDefault(x => x.Id == id);
 
             if (movie == null)
             {
@@ -94,7 +94,7 @@ namespace MovieStoreAPI.Controllers
             return Ok(actors);
         }
 
-        [HttpGet("movies/filter")]
+        [HttpGet("filtriranjeFilma")]
         public IActionResult FilterMovies([FromQuery] string? genre, [FromQuery] decimal? budget, [FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate)
         {
             if (genre == null && budget == null && startDate == null && endDate == null)
