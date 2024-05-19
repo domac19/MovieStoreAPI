@@ -81,9 +81,9 @@ namespace MovieStoreAPI.Controllers
         }
 
         [HttpGet("movies/{movieId}/actors")]
-        public IActionResult GetActorsByMovie(int id)
+        public IActionResult GetActorsByMovie()
         {
-            var movie = _appDbContext.Movie.Include(m => m.Actors).FirstOrDefault(m => m.Id == id);
+            var movie = _appDbContext.Movie.Include(m => m.Actors).FirstOrDefault();
 
             if (movie == null)
             {
