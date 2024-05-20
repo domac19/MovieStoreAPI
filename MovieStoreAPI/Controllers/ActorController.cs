@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MovieStoreAPI.Context;
 using MovieStoreAPI.Models;
 
@@ -23,8 +24,9 @@ namespace MovieStoreAPI.Controllers
             return Ok(getActorDataById);
         }
 
+        [Authorize]
         [HttpPut("ažuriranjeVlastitihPodataka")]
-        public IActionResult GetMoviesById([FromBody] Actor actor)
+        public IActionResult UpdateMovies([FromBody] Actor actor)
         {
             var findActorById = _appDbContext.Actor.Find(actor.Id);
 
@@ -53,7 +55,7 @@ namespace MovieStoreAPI.Controllers
         }
 
         [HttpGet("pregledFilmovaGdjeJeUloga")]
-        public IActionResult GetSecuredMovies(int actorId)
+        public IActionResult GetSecuredMovies()
         {
             var securedMovies = _appDbContext.Movie.Where(m => m.Role == "secured").ToList();
 

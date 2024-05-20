@@ -16,7 +16,6 @@ namespace MovieStoreAPI.Controllers
             _appDbContext = appContext;
         }
 
-        [Authorize]
         [HttpGet("pregledSvihFilmova")]
         public ActionResult<List<Movie>> GetAllMovies()
         {
@@ -29,6 +28,7 @@ namespace MovieStoreAPI.Controllers
             return Ok(_appDbContext.Movie.Where(x => x.Id == id).SingleOrDefault());
         }
 
+        [Authorize]
         [HttpPost("kreiranjeFilma")]
         public IActionResult CreateMovie([FromBody] Movie movie)
         {
@@ -43,6 +43,7 @@ namespace MovieStoreAPI.Controllers
             return Ok(movie);
         }
 
+        [Authorize]
         [HttpPut]
         public IActionResult UpdateMovie([FromBody] Movie movie)
         {
@@ -66,6 +67,7 @@ namespace MovieStoreAPI.Controllers
             return Ok(movie);
         }
 
+        [Authorize]
         [HttpDelete]
         public IActionResult DeleteMovieById(int id)
         {
