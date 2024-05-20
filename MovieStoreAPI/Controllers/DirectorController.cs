@@ -34,7 +34,7 @@ namespace MovieStoreAPI.Controllers
         {
             if (movie == null)
             {
-                return BadRequest();
+                return NotFound();
             }
 
             _appDbContext.Movie.Add(movie);
